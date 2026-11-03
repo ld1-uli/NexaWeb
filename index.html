@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NexaWeb – Création de sites web par des jeunes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#ffffff;--surf:#ffffff;--ink:#1f2b4d;--green:#2d7f6b;--on-green:#ffffff;
+  --mint:#ffffff;--mute:#5a6379;--line:#e6e9f0;
+  --a2:#3a9a8a;--a3:#79c46a;--a4:#3f6fd0;
+  color-scheme:only light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hanken Grotesk",system-ui,sans-serif;font-size:1.05rem;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:1.5rem;letter-spacing:-.02em;line-height:1}
+.logo svg{width:32px;height:35px}
+.logo .wm{font-size:1.75rem;letter-spacing:-.035em;color:var(--ink);line-height:1}
+.logo .wm b{font-weight:800;color:var(--ink)}
+.logo .wm i{font-style:normal;font-weight:300;color:var(--green)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--bg);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+nav{display:flex;gap:22px;align-items:center;font-size:.95rem}
+nav a{text-decoration:none;color:var(--mute)}
+nav a:hover{color:var(--ink)}
+.btn{display:inline-block;background:var(--green);color:var(--on-green);padding:13px 24px;border-radius:999px;text-decoration:none;font-weight:500;border:0;font:inherit;font-weight:500;cursor:pointer}
+.btn{position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s,background-position .6s;background-image:linear-gradient(110deg,var(--green) 0%,var(--green) 40%,var(--a2) 100%);background-size:220% 100%;background-position:0 0}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%)}
+.btn:hover{background-position:100% 0;transform:translateY(-2px);box-shadow:0 10px 24px -10px var(--green)}
+.btn:hover::after{transform:translateX(120%);transition:transform .7s}
+.btn.ghost{background:transparent;background-image:none;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ghost:hover{border-color:var(--green);color:var(--green);box-shadow:none}
+nav .btn{padding:8px 18px;color:var(--on-green)}
+.burger{display:none;width:44px;height:44px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);cursor:pointer;padding:0;align-items:center;justify-content:center;flex-direction:column;gap:5px;transition:border-color .25s}
+.burger:hover{border-color:var(--green)}
+.burger span{display:block;width:20px;height:2.5px;border-radius:2px;background:var(--ink);transition:transform .3s,opacity .2s,background .3s}
+.burger[aria-expanded="true"] span{background:var(--green)}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+@media(max-width:640px){
+  .burger{display:flex}
+  header .wrap{position:relative}
+  nav{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--bg);padding:6px 22px 22px;border-bottom:1px solid var(--line);box-shadow:0 18px 30px -18px rgba(31,43,77,.25);opacity:0;visibility:hidden;transform:translateY(-10px);transition:opacity .25s,transform .25s,visibility .25s}
+  nav.open{opacity:1;visibility:visible;transform:none}
+  nav a:not(.btn){display:block;padding:16px 2px;font-size:1.1rem;color:var(--ink);border-bottom:1px solid var(--line)}
+  nav a:not(.btn)::after{display:none}
+  nav .btn{margin-top:18px;text-align:center;padding:14px 24px}
+  .hero{padding:40px 0 48px}
+  section{padding:52px 0}
+}
+
+/* Hero */
+.hero{padding:64px 0 72px;position:relative;overflow:hidden}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(80px);opacity:.18;z-index:0;pointer-events:none}
+.hero::before{display:none;width:380px;height:380px;background:var(--a2);top:-120px;right:-80px;animation:drift 14s ease-in-out infinite alternate}
+.hero::after{display:none;width:320px;height:320px;background:var(--a4);bottom:-140px;left:-100px;opacity:.1;animation:drift 18s ease-in-out infinite alternate-reverse}
+.hero .wrap{position:relative;z-index:1}
+.hero .wrap{display:grid;gap:48px;grid-template-columns:1.05fr .95fr;align-items:center}
+@media(max-width:820px){.hero .wrap{grid-template-columns:1fr}}
+h1{font-size:clamp(2.5rem,7vw,4.6rem);line-height:1;letter-spacing:-.035em;margin:0 0 22px;font-weight:800}
+h1 span{font-weight:300;display:block;color:var(--green);
+  background:linear-gradient(90deg,var(--green),var(--a2),var(--a4),var(--a3),var(--green));background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:flow 9s linear infinite}
+.lead{color:var(--mute);max-width:46ch;margin:0 0 30px;font-size:1.15rem}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+
+/* Mockup interactif */
+.demo{background:var(--surf);border:1.5px solid var(--line);border-radius:14px;overflow:hidden}
+.bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1.5px solid var(--line)}
+.bar i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.tabs{margin-left:auto;display:flex;gap:4px;background:var(--line);padding:3px;border-radius:999px}
+.tabs button{border:0;background:transparent;color:var(--mute);font:inherit;font-size:.82rem;padding:4px 12px;border-radius:999px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.screen{padding:18px;display:grid;gap:12px}
+.screen div{border-radius:8px;transition:background .8s,border-color .8s,color .8s,transform .6s}
+.hd{height:14px;width:40%;display:flex;align-items:center}
+.hb{min-height:118px;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.hb em{font-style:normal;font-weight:800;font-size:1.35rem;letter-spacing:-.02em}
+.hb small{font-size:.85rem}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.row div{height:58px}
+/* état maquette */
+.screen[data-mode="maquette"] div{border:1.5px dashed var(--mute);background:transparent;color:transparent}
+.screen[data-mode="site"] .hd{background:var(--ink);border:1.5px solid var(--ink)}
+.screen[data-mode="site"] .hb{background:var(--bg);border:1.5px solid var(--green);color:var(--ink);animation:bord 6s ease-in-out infinite}
+.screen[data-mode="site"] .hb em{color:var(--green);animation:hue 6s ease-in-out infinite}
+.screen[data-mode="site"] .row div{background:var(--bg);border:1.5px solid var(--line)}
+.screen[data-mode="site"] .row div:nth-child(1){animation:tint1 6s ease-in-out infinite}
+.screen[data-mode="site"] .row div:nth-child(3){animation:tint2 6s ease-in-out infinite 1.5s}
+.screen[data-mode="site"] .row div:nth-child(2){background:var(--ink);border-color:var(--ink)}
+.screen[data-mode="maquette"] .hb em,.screen[data-mode="maquette"] .hb small{color:var(--mute)}
+
+/* Sections */
+section{padding:72px 0}
+.alt{background:var(--bg);position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+h2{font-size:clamp(1.9rem,4.5vw,2.8rem);letter-spacing:-.03em;line-height:1.08;margin:0 0 14px;font-weight:800}
+.sub{color:var(--mute);max-width:52ch;margin:0 0 44px}
+
+/* Services : chaîne de nœuds, comme le logo */
+.chain{list-style:none;margin:0;padding:0;position:relative}
+.chain::before{content:"";position:absolute;left:11px;top:14px;bottom:14px;width:4px;background:var(--ink);border-radius:2px}
+.chain li{position:relative;padding:0 0 38px 54px}
+.chain li:last-child{padding-bottom:0}
+.chain li::before{content:"";position:absolute;left:0;top:5px;width:26px;height:26px;border-radius:50%;background:var(--bg);border:7px solid var(--ink)}
+.chain li::before{animation:node 6s ease-in-out infinite}
+.chain li:nth-child(2)::before{animation-delay:-2s}
+.chain li:nth-child(3)::before{animation-delay:-4s}
+.chain::before{background:linear-gradient(var(--ink),var(--green),var(--a2),var(--a4));background-size:100% 300%;animation:flowy 8s linear infinite}
+.chain h3{margin:0 0 6px;font-size:1.4rem;letter-spacing:-.02em}
+.chain p{margin:0 0 10px;color:var(--mute);max-width:58ch}
+.chain .tag{font-size:.9rem;font-weight:500;color:var(--green)}
+
+/* Méthode */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;list-style:none;padding:0;margin:0;counter-reset:s}
+@media(max-width:820px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.steps{grid-template-columns:1fr}}
+.steps li{counter-increment:s;border-top:4px solid transparent;border-image:linear-gradient(90deg,var(--ink),var(--green),var(--a2),var(--a4)) 1;padding-top:14px;transition:transform .3s}
+.steps li:hover{transform:translateY(-6px)}
+.steps li::before{content:counter(s);font-weight:800;font-size:2rem;color:var(--green);line-height:1;animation:hue 7s ease-in-out infinite}
+.steps h3{margin:8px 0 6px;font-size:1.15rem}
+.steps p{margin:0;color:var(--mute);font-size:.98rem}
+
+/* Équipe */
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px}
+.person .av{width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:800;font-size:1.3rem;margin-bottom:12px}
+.person:nth-child(even) .av{background:linear-gradient(135deg,var(--green),var(--a2));color:var(--on-green)}
+.person h3{margin:0;font-size:1.1rem}
+.person p{margin:2px 0 0;color:var(--mute);font-size:.95rem}
+
+/* Contact */
+.contact{display:grid;gap:24px;grid-template-columns:1fr}
+@media(max-width:820px){.contact{grid-template-columns:1fr}}
+form{display:grid;gap:14px}
+label{display:grid;gap:5px;font-weight:500;font-size:.95rem}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--surf);border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;width:100%}
+textarea{min-height:110px;resize:vertical}
+input,select,textarea{transition:border-color .25s,box-shadow .25s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 4px color-mix(in srgb,var(--a2) 22%,transparent)}
+.opt{transition:border-color .25s,background .25s,transform .2s}
+.opt:hover{border-color:var(--a2);transform:translateX(3px)}
+.note{min-height:1.4em;color:var(--green);font-weight:500;margin:0}
+.dv{background:var(--surf);border:1.5px solid var(--line);border-radius:14px;padding:24px;display:grid;gap:18px;max-width:720px}
+.dv h3{margin:0;font-size:1.3rem}
+.prog{margin:0;font-weight:500;color:var(--mute);font-size:.95rem}
+.pg{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:-8px}
+.pg i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--a2),var(--a4),var(--green));background-size:300% 100%;animation:flow 4s linear infinite;transition:width .5s}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:8px;min-width:0}
+legend{font-weight:500;font-size:.95rem;padding:0;margin-bottom:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;font-weight:400;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;cursor:pointer}
+.opt:has(input:checked){border-color:var(--green);background:var(--bg);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 18%,transparent)}
+.opt input{width:auto;margin-top:5px;accent-color:var(--green)}
+.opt small{display:block;color:var(--mute)}
+.dv pre{white-space:pre-wrap;font:inherit;font-size:.95rem;background:color-mix(in srgb,var(--ink) 5%,var(--bg));padding:16px;border-radius:10px;margin:0;max-height:380px;overflow:auto}
+.proj{border-left:4px solid transparent;border-image:linear-gradient(180deg,var(--green),var(--a2),var(--a4),var(--a3)) 1;background-size:100% 300%;padding-left:22px;max-width:680px;transition:transform .35s}
+.proj:hover{transform:translateX(8px)}
+.proj h3{margin:4px 0 8px;font-size:1.6rem;letter-spacing:-.02em}
+.proj p{color:var(--mute);margin:0 0 14px}
+.proj ul{margin:0 0 22px;padding-left:20px}
+.proj li{margin-bottom:4px}
+.proj+.proj{margin-top:46px}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--mute);font-size:.92rem}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer .logo .wm{font-size:1.3rem}footer .logo svg{width:22px;height:24px}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease}
+.rv.in{opacity:1;transform:none}
+.cta .btn:nth-child(2){transition-delay:.05s}
+nav a:not(.btn){position:relative}
+nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--green),var(--a2),var(--a4));transform:scaleX(0);transform-origin:left;transition:transform .3s}
+nav a:not(.btn):hover::after{transform:scaleX(1)}
+@keyframes flow{0%{background-position:0 50%}100%{background-position:300% 50%}}
+@keyframes flowy{0%{background-position:0 0}100%{background-position:0 300%}}
+@keyframes hue{0%,100%{color:var(--green)}33%{color:var(--a2)}66%{color:var(--a4)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-60px,50px) scale(1.2)}}
+@keyframes node{0%,100%{border-color:var(--ink)}25%{border-color:var(--green)}50%{border-color:var(--a2)}75%{border-color:var(--a4)}}
+@keyframes tint1{0%,100%{border-color:var(--line)}50%{border-color:var(--a2)}}
+@keyframes bord{0%,100%{border-color:var(--green)}33%{border-color:var(--a2)}66%{border-color:var(--a4)}}
+@keyframes tint2{0%,100%{border-color:var(--line)}50%{border-color:var(--a4)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}h1 span{-webkit-text-fill-color:var(--green);background:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="n" viewBox="0 0 40 44">
+    <g stroke="var(--ink)" stroke-width="4.5" stroke-linecap="round">
+      <path d="M7 8V36M7 8L33 36M33 8V36"/>
+    </g>
+    <circle cx="7" cy="8" r="6.5" fill="var(--ink)"/><circle cx="7" cy="8" r="2.4" fill="var(--bg)"/>
+    <circle cx="7" cy="36" r="6.5" fill="var(--ink)"/><circle cx="7" cy="36" r="2.4" fill="var(--bg)"/>
+    <circle cx="33" cy="8" r="6.5" fill="var(--green)"/><circle cx="33" cy="8" r="2.4" fill="var(--bg)"/>
+    <circle cx="33" cy="36" r="6.5" fill="var(--green)"/><circle cx="33" cy="36" r="2.4" fill="var(--bg)"/>
+  </symbol>
+</svg>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="NexaWeb, accueil"><svg><use href="#n"/></svg><span class="wm"><b>nexa</b><i>web</i></span></a>
+    <button class="burger" id="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <nav id="menu" aria-label="Navigation principale">
+      <a href="#services">Services</a>
+      <a href="#methode">Méthode</a>
+      <a href="#realisations">Réalisations</a>
+      <a class="btn" href="#contact">Devis gratuit</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Votre site web,<span>fait par des jeunes qui s’y connaissent.</span></h1>
+        <p class="lead">Nous sommes un groupe de jeunes créateurs. Nous dessinons des maquettes, puis nous construisons des sites vitrines et des boutiques en ligne pour les associations, commerçants et indépendants.</p>
+        <div class="cta">
+          <a class="btn" href="#contact">Demander un devis</a>
+          <a class="btn ghost" href="#services">Voir nos services</a>
+        </div>
+      </div>
+      <div class="demo" aria-label="Exemple : de la maquette au site">
+        <div class="bar"><i></i><i></i><i></i>
+          <div class="tabs" role="group" aria-label="Choisir l’étape">
+            <button type="button" aria-pressed="true" data-m="maquette">Maquette</button>
+            <button type="button" aria-pressed="false" data-m="site">Site</button>
+          </div>
+        </div>
+        <div class="screen" id="screen" data-mode="maquette">
+          <div class="hd"></div>
+          <div class="hb"><em>Boulangerie Dupont</em><small>Pain frais, tous les matins.</small></div>
+          <div class="row"><div></div><div></div><div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="wrap">
+      <h2>Trois façons de vous aider</h2>
+      <p class="sub">Choisissez une étape ou le projet complet. Chaque offre se discute sur devis, sans engagement.</p>
+      <ul class="chain">
+        <li>
+          <h3>Maquettes de sites</h3>
+          <p>Vous voyez votre futur site avant qu’il existe : pages, couleurs, textes et parcours du visiteur, sur ordinateur et sur téléphone.</p>
+          <span class="tag">Idéal pour valider une idée</span>
+        </li>
+        <li>
+          <h3>Sites vitrines</h3>
+          <p>Un site clair pour présenter votre activité, vos horaires, vos photos et un formulaire de contact. Rapide à charger, simple à lire sur mobile.</p>
+          <span class="tag">Idéal pour être trouvé en ligne</span>
+        </li>
+        <li>
+          <h3>Sites e-commerce</h3>
+          <p>Une boutique en ligne avec catalogue, panier et paiement sécurisé. Nous vous montrons comment ajouter vos produits vous-même.</p>
+          <span class="tag">Idéal pour vendre à distance</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="methode" class="alt">
+    <div class="wrap">
+      <h2>Comment ça se passe</h2>
+      <p class="sub">Un projet en quatre étapes, avec votre avis à chacune.</p>
+      <ol class="steps">
+        <li><h3>On écoute</h3><p>Un premier échange pour comprendre votre activité et vos besoins.</p></li>
+        <li><h3>On dessine</h3><p>Nous vous présentons une maquette à commenter et à ajuster.</p></li>
+        <li><h3>On construit</h3><p>Nous développons le site à partir de la maquette validée.</p></li>
+        <li><h3>On met en ligne</h3><p>Mise en ligne, test sur mobile et prise en main avec vous.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="realisations">
+    <div class="wrap">
+      <h2>Nos réalisations</h2>
+      <p class="sub">Des sites créés par des membres de l’équipe.</p>
+      <div class="proj">
+        <span class="tag" style="color:var(--green);font-weight:500">Site vitrine</span>
+        <h3>AZIMUTH Consulting Sénégal</h3>
+        <p>Site d’une société de conseil en mines et géologie basée à Dakar. Il présente l’entreprise, ses six domaines d’expertise, ses clients et ses partenaires.</p>
+        <ul>
+          <li>Une fiche détaillée pour chacun des six services</li>
+          <li>Chiffres clés et liste des clients de référence</li>
+          <li>Page de partenaires et page de demande de devis</li>
+        </ul>
+        <a class="btn" href="https://ld1-uli.github.io/AZMC/" target="_blank" rel="noopener">Voir le site</a>
+      </div>
+      <div class="proj">
+        <span class="tag" style="color:var(--green);font-weight:500">Site événementiel</span>
+        <h3>IIBS Events</h3>
+        <p>Site des événements de l’Institut Informatique Business School de Dakar : hackathon, conférences et ateliers, avec leurs dates et leurs lieux.</p>
+        <ul>
+          <li>Agenda et page de détail pour chaque événement</li>
+          <li>Présentation des filières : génie logiciel, marketing digital, gestion de projets IT, cybersécurité</li>
+          <li>Actualités, galeries, inscription et contact</li>
+        </ul>
+        <a class="btn" href="https://babsdevjunior.github.io/iibs-events/" target="_blank" rel="noopener">Voir le site</a>
+      </div>
+      <div class="proj">
+        <span class="tag" style="color:var(--green);font-weight:500">Projet créatif</span>
+        <h3>SÉANCE.EXE</h3>
+        <p>Une expérience web où l’on invoque les esprits de vieux langages de programmation. L’intelligence artificielle fonctionne en local, sans cloud ni connexion internet.</p>
+        <ul>
+          <li>Quatre esprits à invoquer : COBOL, FORTRAN, BASIC et PASCAL</li>
+          <li>Visuels dessinés en texte, dans l’esprit des vieux terminaux</li>
+          <li>Site disponible en français et en anglais</li>
+        </ul>
+        <a class="btn" href="https://seance-exe.tech/" target="_blank" rel="noopener">Voir le site</a>
+      </div>
+      <div class="proj">
+        <span class="tag" style="color:var(--green);font-weight:500">Projet web</span>
+        <h3>Sama Pelerin</h3>
+        <p>Un autre site créé par un membre de l’équipe.</p>
+        <a class="btn" href="https://samapelerin.seance-exe.tech/" target="_blank" rel="noopener">Voir le site</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="alt">
+    <div class="wrap contact">
+      <div>
+        <h2>Demander un devis</h2>
+        <p class="sub">Remplissez la fiche projet en quelques étapes. Passez les questions qui ne vous concernent pas : nous les verrons ensemble. Le devis est gratuit.</p>
+      </div>
+      <div id="devis"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top"><svg><use href="#n"/></svg><span class="wm"><b>nexa</b><i>web</i></span></a>
+    <span>Création de sites web · © 2026 NexaWeb</span>
+  </div>
+</footer>
+
+<script>
+const screen=document.getElementById('screen');
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  screen.dataset.mode=b.dataset.m;
+  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+}));
+/* animations : révélation au scroll + bascule auto maquette/site */
+(function(){
+  var items=document.querySelectorAll('.lead,h2,.sub,.chain li,.steps li,.proj,.person,#devis,.demo');
+  items.forEach(function(e,i){e.classList.add('rv');e.style.transitionDelay=(i%4)*70+'ms'});
+  if(!('IntersectionObserver' in window)){items.forEach(function(e){e.classList.add('in')});return}
+  var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.12});
+  items.forEach(function(e){io.observe(e)});
+  var btns=document.querySelectorAll('.tabs button'),auto=true,k=0;
+  btns.forEach(function(b){b.addEventListener('click',function(ev){if(ev.isTrusted)auto=false})});
+  if(!matchMedia('(prefers-reduced-motion:reduce)').matches)setInterval(function(){if(!auto)return;k=1-k;btns[k].click()},3200);
+})();
+(function(){
+  var b=document.getElementById('burger'),n=document.getElementById('menu');
+  function set(o){n.classList.toggle('open',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Fermer le menu':'Ouvrir le menu')}
+  b.addEventListener('click',function(){set(b.getAttribute('aria-expanded')!=='true')});
+  n.addEventListener('click',function(e){if(e.target.closest('a'))set(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false)});
+  document.addEventListener('click',function(e){if(!e.target.closest('header'))set(false)});
+  matchMedia('(min-width:641px)').addEventListener('change',function(){set(false)});
+})();
+const V={};let cur=0;
+const el=document.getElementById('devis');
+const T=(l,k,o={})=>({l,k,...o});
+const S=[
+{t:'Type de site',f:[T('Quel type de site ?','type',{r:[['Site vitrine','Présenter l’activité et les services : coordonnées, formulaire de contact, pas de vente en ligne.'],['Site e-commerce','Vendre produits ou services : panier, paiement, livraison (WooCommerce).'],['Site mixte','Vitrine et quelques produits, ou prise de réservation en ligne. Évolutif.'],['Maquette seule','Uniquement le dessin des pages, sans création du site.']]}),T('Autre besoin','autre')]},
+{t:'Votre entreprise',f:[T('Nom de l’entreprise','entreprise'),T('Activité','activite'),T('Clientèle visée','clientele'),T('Zone géographique','zone'),T('Contact (nom, téléphone)','contact'),T('E-mail','email',{type:'email'}),T('Identité visuelle','identite',{c:['J’ai un logo','J’ai une charte graphique']}),T('Couleurs','couleurs'),T('Polices','polices'),T('Sites que vous aimez (1 à 3)','aimes',{ta:1})]},
+{t:'Vos contenus',f:[T('Éléments déjà prêts','prets',{c:['Textes de présentation','Textes des services / produits','Mentions légales','CGV (si e-commerce)','Photos de qualité','Vidéos']}),T('Pages souhaitées','pages',{c:['Accueil','À propos','Services / Produits','Contact','Blog','FAQ']}),T('Autres pages','pagesAutre')]},
+{t:'Aspects techniques',f:[T('Nom de domaine','domaine',{r:['Existant','À acheter']}),T('Nom souhaité','nomDomaine'),T('Hébergement','hebergement',{r:['Existant','À choisir']}),T('Hébergeur','hebergeur'),T('E-mail pro','mailpro',{r:['Existant','À créer']}),T('Refonte d’un site existant ?','refonte',{r:['Oui, refonte','Non, nouveau site']}),T('Adresse de l’ancien site','ancien'),T('À conserver','garder',{c:['Pages et contenus','Redirections (référencement)']})]},
+{t:'Vente en ligne',if:()=>/commerce|mixte/.test(V.type||''),f:[T('Nombre de produits','nbprod'),T('Catalogue','cata',{c:['Déclinaisons (tailles, couleurs)','Gestion des stocks']}),T('Transporteurs','transp',{c:['Colissimo','Mondial Relay','Retrait en magasin']}),T('Autre transporteur','transpAutre'),T('Zones livrées','zones'),T('Modes de paiement','paiement',{c:['Carte bancaire (Stripe, Mollie, Payplug)','PayPal','Apple Pay / Google Pay','Paiement en plusieurs fois (Alma, Klarna)','Virement','Chèque']}),T('Documents légaux','legal',{c:['CGV prêtes','Politique de retour']})]},
+{t:'Fonctionnalités et visibilité',f:[T('Fonctionnalités','fonc',{c:['Formulaire de contact','Newsletter','Prise de rendez-vous','Espace client','Chat','Réseaux sociaux','Google Maps','Multilingue']}),T('Langues','langues'),T('Être trouvé en ligne','seo',{c:['SEO (référencement Google)','Fiche Google My Business','Statistiques Google Analytics']}),T('Mots-clés visés','mots'),T('Ville / zone ciblée','ville')]},
+{t:'Cadre du projet',f:[T('Budget','budget'),T('Date de lancement souhaitée','lancement'),T('Interlocuteur pour la validation','valid'),T('Téléphone ou e-mail de cet interlocuteur','validContact'),T('Mises à jour du site par','maj',{r:['Nous-mêmes','Le prestataire']}),T('Après la mise en ligne','apres',{c:['Formation WordPress','Maintenance et sauvegardes']})]}
+];
+const act=()=>S.filter(s=>!s.if||s.if());
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function field(f){
+  const v=V[f.k];
+  if(f.r)return `<fieldset><legend>${f.l}</legend>${f.r.map(o=>{const[a,b]=[].concat(o);return `<label class="opt"><input type="radio" name="${f.k}" value="${esc(a)}" ${v===a?'checked':''}><span>${a}${b?`<small>${b}</small>`:''}</span></label>`}).join('')}</fieldset>`;
+  if(f.c)return `<fieldset><legend>${f.l}</legend>${f.c.map(o=>`<label class="opt"><input type="checkbox" name="${f.k}" value="${esc(o)}" ${(v||[]).includes(o)?'checked':''}><span>${o}</span></label>`).join('')}</fieldset>`;
+  if(f.ta)return `<label>${f.l}<textarea name="${f.k}">${esc(v)}</textarea></label>`;
+  return `<label>${f.l}<input name="${f.k}" type="${f.type||'text'}" value="${esc(v)}"></label>`;
+}
+function save(){
+  const s=act()[cur];if(!s)return;
+  s.f.forEach(f=>{
+    const q=[...el.querySelectorAll(`[name="${f.k}"]`)];
+    if(f.c)V[f.k]=q.filter(i=>i.checked).map(i=>i.value);
+    else if(f.r){const c=q.find(i=>i.checked);V[f.k]=c?c.value:''}
+    else V[f.k]=q[0].value.trim();
+  });
+}
+function recap(){
+  const head='Fiche projet NexaWeb – '+new Date().toLocaleDateString('fr-FR');
+  return head+'\n\n'+act().map(s=>{
+    const l=s.f.map(f=>{const v=V[f.k],t=Array.isArray(v)?v.join(', '):v;return t?'- '+f.l+' : '+t:''}).filter(Boolean);
+    return l.length?s.t+'\n'+l.join('\n'):''
+  }).filter(Boolean).join('\n\n');
+}
+function draw(){
+  const a=act(),n=a.length;
+  if(cur>=n){
+    el.innerHTML=`<div class="dv"><h3>Récapitulatif de votre demande</h3><pre>${esc(recap())}</pre><div class="cta"><button class="btn" data-a="mail">Envoyer par e-mail</button><button class="btn ghost" data-a="copy">Copier le texte</button><button class="btn ghost" data-a="edit">Modifier</button></div><p class="note" id="note" role="status"></p></div>`;
+    return;
+  }
+  const s=a[cur];
+  el.innerHTML=`<div class="dv"><p class="prog">Étape ${cur+1} sur ${n} : ${s.t}</p><div class="pg"><i style="width:${(cur+1)/n*100}%"></i></div>${s.f.map(field).join('')}<div class="cta">${cur?'<button class="btn ghost" data-a="prev">Précédent</button>':''}<button class="btn" data-a="next">${cur==n-1?'Voir le récapitulatif':'Suivant'}</button></div></div>`;
+}
+el.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const x=b.dataset.a,note=()=>document.getElementById('note');
+  if(x=='next'||x=='prev'){save();cur+=x=='next'?1:-1;draw();el.scrollIntoView({block:'start'})}
+  else if(x=='edit'){cur=0;draw();el.scrollIntoView({block:'start'})}
+  else if(x=='mail'){location.href='mailto:contact@nexaweb.fr?subject='+encodeURIComponent('Demande de devis – '+(V.type||'')+(V.entreprise?' – '+V.entreprise:''))+'&body='+encodeURIComponent(recap());note().textContent='Votre messagerie s’ouvre : vérifiez le message puis envoyez-le.'}
+  else if(x=='copy'){try{await navigator.clipboard.writeText(recap());note().textContent='Texte copié. Collez-le dans un e-mail à contact@nexaweb.fr.'}catch(err){note().textContent='Copie impossible : sélectionnez le texte ci-dessus à la main.'}}
+});
+draw();
+</script>
+</body>
+</html>
